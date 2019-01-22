@@ -1,0 +1,103 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.4.8/plyr.css" />
+  <style>
+    * {
+      padding: 0px;
+      margin: 0px;
+    }
+    html {
+      transform: rotate(-90deg);
+      transform-origin: left top;
+      width: 100vh;
+      height: 100vw;
+      overflow-x: hidden;
+      position: absolute;
+      top: 100%;
+      left: 0;
+    }
+    .fixed-layover {
+      position: fixed;
+      z-index: 999;
+      height: 24px;
+      width: 130px;
+      right: 12px;
+      top: 13px;
+      color: #fff;
+      background: #e4354c;
+      text-align: center;
+      padding: 5px;
+      line-height: 28px;
+      font-weight: 900;
+      font-size: 14px;
+    }
+    .background {
+      height: 100vh;
+      width: 100vw;
+      position: absolute;
+      background-image: url("https://alaaltayer.com/uploads/2019/01/video-details-767150295457121955.jpg");
+      background-position: center;
+      background-size: cover;
+    }
+    .plyr--video .plyr__control.plyr__tab-focus,
+    .plyr--video .plyr__control:hover,
+    .plyr--video .plyr__control[aria-expanded="true"] {
+      background-color: transparent;
+    }
+    .plyr--full-ui input[type="range"] {
+      color: #e4354c;
+    }
+    .plyr__control--overlaid {
+      background-color: #e4354c;
+    }
+  </style>
+</head>
+<body>
+  <div class="fixed-layover" hidden>عجائب و غرائب</div>
+  <div class="background" onclick="play()"></div>
+  <div
+    id="player"
+    data-plyr-provider="youtube"
+    data-plyr-embed-id="s1eDj2qcz_c"
+  ></div>
+
+  <script src="https://cdn.plyr.io/3.4.8/plyr.js"></script>
+  <script>
+    function play() {
+      window.player.play();
+    }
+    const player = new Plyr("#player", {
+      title: "",
+      autoplay: true,
+      resetOnEnd: true,
+      controls: [
+        "play-large",
+        "play",
+        "progress",
+        "current-time",
+        "mute",
+        "volume",
+        "fullscreen"
+      ]
+    });
+    window.player = player;
+    document.querySelector(".plyr").hidden = true;
+
+    player.on("pause", () => {
+      document.querySelector(".fixed-layover").hidden = false;
+      // document.querySelector(".plyr").hidden = true;
+    });
+    player.on("play", () => {
+      document.querySelector(".plyr").hidden = false;
+    });
+    let first_play = true;
+    player.on("playing", () => {
+      setTimeout(
+        () => (document.querySelector(".fixed-layover").hidden = true),
+        first_play ? 3000 : 250
+      );
+      first_play = false;
+    });
+  </script>
+</body>
+</html>
